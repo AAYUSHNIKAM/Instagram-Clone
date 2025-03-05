@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-white border-bottom shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}"><img style="width: 10%; margin: 10px;" src="{% static 'images/instagram.png' %}">Instagram</a>
+            <div>
+                <a href="{% url 'create_post' %}" class="btn btn-primary">Create Post</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>Edit Profile</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Profile Picture -->
+            <div class="mb-3">
+                <label for="profile_pic" class="form-label">Profile Picture</label>
+                <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="image/*" value="{{ form.profile_pic.value }}">
+                {% if form.profile_pic.errors %}
+                    <div class="text-danger">
+                        {% for error in form.profile_pic.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Bio -->
+            <div class="mb-3">
+                <label for="bio" class="form-label">Bio</label>
+                <textarea class="form-control" id="bio" name="bio" rows="3">{{ form.bio.value }}</textarea>
+                {% if form.bio.errors %}
+                    <div class="text-danger">
+                        {% for error in form.bio.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Website -->
+            <div class="mb-3">
+                <label for="website" class="form-label">Website</label>
+                <input type="url" class="form-control" id="website" name="website" value="{{ form.website.value }}">
+                {% if form.website.errors %}
+                    <div class="text-danger">
+                        {% for error in form.website.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Save Changes Button -->
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+
+</body>
+</html>

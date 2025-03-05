@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instagram</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-box {
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #dbdbdb;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+        }
+        .login-box img {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        .btn-instagram {
+            background-color: #0095f6;
+            color: white;
+            font-weight: bold;
+            border: none;
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .btn-instagram:hover {
+            background-color: #0077cc;
+        }
+        .register-box {
+            margin-top: 10px;
+            padding: 15px;
+            border: 1px solid #dbdbdb;
+            background-color: white;
+            text-align: center;
+            border-radius: 10px;
+            width: 350px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div>
+        <div class="login-box">
+            <img src="{% static 'images/instagram.png' %}" alt="Instagram">
+            <p class="text-muted">Log in to see photos and videos from your friends.</p>
+            <a href="{% url 'login' %}" class="btn btn-instagram">Log In</a>
+        </div>
+        <div class="register-box">
+            <p>Don't have an account? <a href="{% url 'register' %}" class="text-primary">Sign up</a></p>
+        </div>
+        <div class="footer">
+            <p>Instagram Clone © 2025</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

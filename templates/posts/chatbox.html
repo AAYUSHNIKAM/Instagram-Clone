@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbox</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+
+
+        .dark-mode {
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .navbar {
+            background-color: #fff;
+            transition: background 0.3s;
+        }
+
+        .dark-mode .navbar {
+            background-color: #333;
+        }
+
+        .navbar-brand {
+            font-family: 'Billabong', sans-serif;
+            font-size: 28px;
+        }
+
+        .feed-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .dark-mode .post-card {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            color: #fff;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .post-img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+        }
+
+        .post-body {
+            padding: 10px;
+        }
+
+        .like-comment-btns {
+            display: flex;
+            gap: 10px;
+            padding: 5px 10px;
+        }
+
+        /* Dark Mode Button */
+        .toggle-dark-mode {
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .toggle-dark-mode img {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Ensure links and buttons adapt to dark mode */
+        .dark-mode a,
+        .dark-mode .btn {
+            color: #fff !important;
+        }
+
+        .dark-mode .btn-outline-dark {
+            border-color: #fff;
+            color: #fff !important;
+        }
+
+        .dark-mode .btn-outline-dark:hover {
+            background: #fff;
+            color: #000 !important;
+        }
+
+        .dark-mode .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .dark-mode .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+
+        /* message */
+        .chat-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .user-list {
+            background: #f1f1f1;
+            padding: 15px;
+            border-right: 1px solid #ddd;
+        }
+        .user-list h4 {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .user-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .user-list li {
+            margin-bottom: 10px;
+        }
+        .user-list a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        .user-list img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .chat-window {
+            padding: 15px;
+            height: 500px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+        .message strong {
+            color: #40454a;
+        }
+        .message p {
+            margin: 5px 0;
+        }
+        .message small {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Sender and Receiver Styling */
+        .message-container.sent {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .message-container.received {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .message-container .message {
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #e6f7ff;
+            color: #333;
+            max-width: 80%;
+        }
+
+        .message-container.sent .message {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .message-container.received .message {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .message-form {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: #fff;
+        }
+        .message-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+        }
+        .message-form button {
+            margin-top: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .message-form button:hover {
+            background: #0056b3;
+        }
+
+        .delete-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light border-bottom shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+                <img style="width: 10%; margin: 10px;" src="{% static 'images/instagram.png' %}">Instagram
+            </a>
+            <div>
+                <!-- Dark Mode Toggle Button -->
+                <button class="toggle-dark-mode">
+                    <img id="darkModeIcon" src="{% static 'images/moon.png' %}" alt="Toggle Dark Mode">
+                </button>
+                <a href="{% url 'create_post' %}" class="btn btn-primary">Create Post</a>
+                <a href="{% url 'profile' request.user.username %}" class="btn btn-outline-dark">Profile</a>
+                <a class="btn btn-outline-dark" href="{% url 'create_reel' %}">Create Reel</a>
+                <a class="btn btn-outline-dark" href="{% url 'reels_feed' %}">Reels</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                <a href="{% url 'chatbox' %}" class="btn btn-primary">Chatbox</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="chat-container">
+        <div class="row">
+            <!-- Left Side: List of Users to Chat With -->
+            <div class="col-md-3 user-list">
+                <h4>Chats</h4>
+                <ul>
+                    {% for user in users_to_chat %}
+                    <li>
+                        <a href="?user={{ user.id }}">
+                            <img src="{% if user.profile.profile_pic %}{{ user.profile.profile_pic.url }}{% else %}{% static 'images/default_profile.jpg' %}{% endif %}"
+                                alt="{{ user.username }}">
+                            {{ user.username }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Right Side: Chat Window -->
+            <div class="col-md-9">
+                {% if selected_user %}
+                <h4 class="p-3">Chat with {{ selected_user.username }}</h4>
+                <div class="chat-window">
+                    {% for message in messages %}
+                    <div class="message-container {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                        <div class="message">
+                            <strong>{{ message.sender.username }}:</strong>
+                            <p>{{ message.message }}</p>
+                            <small>{{ message.timestamp }}</small>
+                            {% if message.sender == request.user %}
+                            <form method="POST" action="{% url 'delete_message' message.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button style="background-color: #007bff; border-color: #007bff;" type="submit" >🗑️</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Message Form -->
+                <form method="POST" class="message-form">
+                    {% csrf_token %}
+                    <textarea name="message" rows="3" placeholder="Type your message..." required></textarea>
+                    <button type="submit">Send</button>
+                </form>
+                {% else %}
+                <p class="p-3">Select a user to start chatting.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
